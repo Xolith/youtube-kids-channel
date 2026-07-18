@@ -1,0 +1,7 @@
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\space_scene_01.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\space_scene_02.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\space_scene_03.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\space_scene_04.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\space_scene_05.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\space_scene_06.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\space_scene_07.mp4'
