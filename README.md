@@ -16,8 +16,11 @@ A complete toolkit for creating kid-friendly YouTube Shorts for English-speaking
 # Install dependencies
 pip install -r requirements.txt
 
+# Set Pixabay API key (get from https://pixabay.com/api/docs/)
+echo "PIXABAY_API_KEY=your_api_key" > .env
+
 # Run pipeline
-python main_pipeline.py
+python scripts/main_pipeline.py
 ```
 
 ## Project Structure
@@ -27,7 +30,7 @@ YouTube/
 ├── scripts/
 │   ├── pixabay_downloader.py  # Media download from Pixabay
 │   ├── voice_generator.py      # TTS voice generation
-│   ├── video_creator.py        # MoviePy video assembly
+│   ├── video_creator.py        # MoviePy video assembly (requires v2.0+)
 │   └── main_pipeline.py        # Main orchestration
 ├── output/
 │   ├── videos/    # Generated Shorts
@@ -35,6 +38,7 @@ YouTube/
 │   └── images/    # Downloaded Pixabay images
 ├── content/
 │   └── ideas/     # Content plan & templates
+├── .env.example    # Environment template
 └── requirements.txt
 ```
 
@@ -59,12 +63,11 @@ YouTube/
 - **Format**: MP4 (H.264 + AAC)
 - **Language**: English
 
-## Pixabay API
+## Requirements
 
-Uses Pixabay API for royalty-free media:
-- Key: `56396286-58d5762f4e09601e7c30b5cd7`
-- Safe search enabled
-- Kids-friendly content filters
+- MoviePy 2.0+ (uses `from moviepy import *` syntax)
+- FFmpeg (included with imageio)
+- ImageMagick (optional, for text overlays)
 
 ## License
 

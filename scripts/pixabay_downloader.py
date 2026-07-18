@@ -1,7 +1,7 @@
 """
 Pixabay Downloader for Kids YouTube Channel
 Fetches royalty-free images and videos for children's content
-Uses Pixabay API key: 56396286-58d5762f4e09601e7c30b5cd7
+API key should be set in .env file or PIXABAY_API_KEY environment variable
 """
 
 import requests
@@ -9,7 +9,7 @@ import json
 import os
 from typing import List, Dict, Optional
 
-PIXABAY_API_KEY = "56396286-58d5762f4e09601e7c30b5cd7"
+PIXABAY_API_KEY = os.getenv("PIXABAY_API_KEY", "")
 BASE_URL = "https://pixabay.com/api"
 VIDEO_URL = "https://pixabay.com/videos/api/videos"
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "output")
@@ -21,9 +21,9 @@ def search_images(query: str, count: int = 5) -> List[Dict]:
         "key": PIXABAY_API_KEY,
         "q": query,
         "image_type": "photo",
-        "orientation": "vertical",  # Better for Shorts
+        "orientation": "vertical",
         "per_page": count,
-        "safesearch": "true",  # Kids-safe content only
+        "safesearch": "true",
         "order": "popular"
     }
     
@@ -90,7 +90,6 @@ def download_media(items: List[Dict], media_type: str = "image") -> List[str]:
     
     return downloaded
 
-# Predefined kids-friendly search queries
 KIDS_SEARCH_QUERIES = {
     "animals": ["cute animals", "wild animals", "pets", "farm animals", "ocean animals"],
     "education": ["alphabet letters", "numbers learning", "colors rainbow", "shapes geometry", "solar system"],
@@ -98,9 +97,3 @@ KIDS_SEARCH_QUERIES = {
     "activities": ["kids playing", "educational games", "art drawing", "sports kids", "dance children"],
     "nature": ["sunset landscape", "forest trees", "mountain view", "river stream", "flower garden"]
 }
-
-if __name__ == "__main__":
-    # Test search
-    print("Testing Pixabay search...")
-    results = search_images("cute animals", count=3)
-    print(json.dumps(results[:2], indent=2))
