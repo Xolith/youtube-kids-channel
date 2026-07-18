@@ -1,0 +1,7 @@
+# YouTube Kids Channel Dependencies
+gtts>=0.15.0
+requests>=2.31.0
+moviepy>=1.0.3
+pillow>=10.0.0
+numpy>=1.24.0
+pydub>=0.25.0
