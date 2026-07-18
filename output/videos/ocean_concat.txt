@@ -1,0 +1,7 @@
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\ocean_01_intro.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\ocean_02_octopus.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\ocean_03_dolphin.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\ocean_04_starfish.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\ocean_05_seahorse.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\ocean_06_whale.mp4'
+file 'C:\Users\samet\Desktop\Projeler\YouTube\output\videos\ocean_07_outro.mp4'
