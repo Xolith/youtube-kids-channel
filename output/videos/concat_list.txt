@@ -1,0 +1,7 @@
+file 'file:./output/videos/01_intro.mp4'
+file 'file:./output/videos/02_fact_1.mp4'
+file 'file:./output/videos/03_fact_2.mp4'
+file 'file:./output/videos/04_fact_3.mp4'
+file 'file:./output/videos/05_fact_4.mp4'
+file 'file:./output/videos/06_fact_5.mp4'
+file 'file:./output/videos/07_outro.mp4'

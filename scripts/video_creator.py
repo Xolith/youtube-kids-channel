@@ -7,7 +7,6 @@ from moviepy.editor import (
     VideoFileClip, AudioFileClip, TextClip, CompositeVideoClip,
     ColorClip, concatenate_videoclips
 )
-from moviepy.video.fx.all import fadein, fadeout
 import os
 from typing import List, Optional, Tuple
 
@@ -31,7 +30,7 @@ COLORS = {
     "accent": "#95E1D3"
 }
 
-def create_intro(duration: int = 3) -> ColorClip:
+def create_intro(duration: int = 3):
     """Create channel intro with animated text"""
     # Create background clip
     intro = ColorClip(
@@ -65,7 +64,7 @@ def create_intro(duration: int = 3) -> ColorClip:
     return CompositeVideoClip([intro, text, subtitle])
 
 def create_fact_clip(fact_text: str, image_path: Optional[str] = None, 
-                    duration: int = 8, number: int = 1) -> CompositeVideoClip:
+                    duration: int = 8, number: int = 1):
     """Create a fact presentation clip"""
     
     if image_path and os.path.exists(image_path):
@@ -110,7 +109,7 @@ def create_fact_clip(fact_text: str, image_path: Optional[str] = None,
     
     return CompositeVideoClip([clip, badge, txt])
 
-def create_outro(duration: int = 4) -> ColorClip:
+def create_outro(duration: int = 4):
     """Create video outro with subscribe prompt"""
     outro = ColorClip(
         size=(1080, 1920),
@@ -199,4 +198,3 @@ if __name__ == "__main__":
     ]
     
     print("Creating sample short video...")
-    print("Note: Run 'pip install -r requirements.txt' first!")
