@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Kids Studio — Premium Shorts Creator</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --brand-500: #3b82f6;
+      --brand-400: #60a5fa;
+      --brand2-500: #a855f7;
+      --accent-400: #22d3ee;
+      --success-400: #34d399;
+      --warning-400: #fbbf24;
+      --bg-deep: #0a0a0f;
+      --bg-primary: #020617;
+      --bg-glass: rgba(255, 255, 255, .04);
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, .06);
+      --border-strong: rgba(255, 255, 255, .12);
+      --glow-blue: rgba(96, 165, 250, .4);
+      --glow-purple: rgba(168, 85, 247, .4);
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+    }
+
+    .bg-mesh::before,
+    .bg-mesh::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: .15;
+      will-change: transform;
+    }
+
+    .bg-mesh::before {
+      width: 80vw;
+      height: 80vw;
+      top: -20%;
+      left: -10%;
+      background: radial-gradient(circle, var(--glow-blue), transparent 70%);
+      animation: meshA 20s ease-in-out infinite alternate;
+    }
+
+    .bg-mesh::after {
+      width: 70vw;
+      height: 70vw;
+      bottom: -20%;
+      right: -10%;
+      background: radial-gradient(circle, var(--glow-purple), transparent 70%);
+      animation: meshB 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes meshA {
+      0% {
+        transform: translate(0, 0) scale(1)
+      }
+
+      100% {
+        transform: translate(10vw, 8vh) scale(1.15)
+      }
+    }
+
+    @keyframes meshB {
+      0% {
+        transform: translate(0, 0) scale(1)
+      }
+
+      100% {
+        transform: translate(-8vw, -10vh) scale(1.1)
+      }
+    }
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 0 24px;
+      background: rgba(10, 10, 15, .75);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .nav .brand {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 700;
+      font-family: 'Sora', sans-serif;
+      font-size: 1.15rem;
+    }
+
+    .nav .accent {
+      background: linear-gradient(135deg, var(--brand-400), var(--brand2-500));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav .spacer {
+      flex: 1;
+    }
+
+    .nav a.link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 500;
+      transition: color .2s;
+      cursor: pointer;
+    }
+
+    .nav a.link:hover {
+      color: var(--text-primary);
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 24px 60px;
+    }
+
+    h1 {
+      font-family: 'Sora';
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin-bottom: 6px;
+      letter-spacing: -.03em;
+      font-weight: 800;
+    }
+
+    .sub {
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 22px;
+      margin-bottom: 40px;
+    }
+
+    @media(max-width:860px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat {
+      background: var(--bg-glass);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 26px;
+      transition: transform .3s var(--ease-out), box-shadow .3s;
+    }
+
+    .stat:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px -8px rgba(96, 165, 250, .15);
+    }
+
+    .stat .lbl {
+      color: var(--text-muted);
+      font-size: .82rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+
+    .stat .val {
+      font-family: 'Sora';
+      font-size: 2.1rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .section {
+      background: var(--bg-glass);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 30px;
+      margin-bottom: 28px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .section-head h2 {
+      font-family: 'Sora';
+      font-size: 1.3rem;
+      letter-spacing: -.01em;
+      font-weight: 700;
+    }
+
+    /* Topic cards */
+    .topics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .topic {
+      background: rgba(255, 255, 255, .02);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all .25s var(--ease-out);
+    }
+
+    .topic:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px -10px rgba(96, 165, 250, .2);
+    }
+
+    .topic.active {
+      border-color: var(--brand-400);
+      background: rgba(59, 130, 246, .06);
+      box-shadow: 0 12px 32px -8px rgba(59, 130, 246, .3);
+    }
+
+    .topic .ico {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+    }
+
+    .topic h3 {
+      font-family: 'Sora';
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .topic p {
+      color: var(--text-muted);
+      font-size: .82rem;
+    }
+
+    /* Style chips */
+    .chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, .02);
+      color: var(--text-secondary);
+      transition: all .2s;
+    }
+
+    .chip.active {
+      background: linear-gradient(135deg, var(--brand-500), var(--brand2-500));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .chip:hover:not(.active) {
+      border-color: var(--border-strong);
+    }
+
+    /* Scenes list */
+    .scenes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .scene {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .02);
+      border: 1px solid var(--border);
+    }
+
+    .scene .n {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(96, 165, 250, .1);
+      color: var(--brand-400);
+      font-weight: 700;
+      font-size: .9rem;
+    }
+
+    .scene .txt {
+      font-size: .88rem;
+      color: var(--text-secondary);
+    }
+
+    .scene .sub-tag {
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: .72rem;
+      font-weight: 600;
+      background: rgba(168, 85, 247, .12);
+      color: var(--brand2-500);
+    }
+
+    input[type=file] {
+      display: none;
+    }
+
+    .upload-btn {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: .86rem;
+      background: rgba(96, 165, 250, .1);
+      color: var(--brand-400);
+      border: 1px solid var(--border-strong);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .upload-btn:hover {
+      background: rgba(96, 165, 250, .18);
+    }
+
+    .upload-btn.has {
+      background: rgba(52, 211, 153, .1);
+      color: var(--success-400);
+      border-color: rgba(52, 211, 153, .3);
+    }
+
+    /* Big generate button */
+    .gen-btn {
+      width: 100%;
+      padding: 18px;
+      border-radius: 18px;
+      font-family: 'Sora';
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand-500), var(--brand2-500));
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 14px 40px -10px rgba(59, 130, 246, .5);
+      transition: transform .2s, box-shadow .2s;
+      margin-top: 22px;
+    }
+
+    .gen-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 48px -10px rgba(96, 165, 250, .55);
+    }
+
+    .gen-btn:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+    }
+
+    /* Progress */
+    .progress {
+      margin-top: 24px;
+      padding: 24px;
+      border-radius: 18px;
+      background: var(--bg-glass);
+      border: 1px solid var(--border);
+      display: none;
+    }
+
+    .progress.show {
+      display: block;
+    }
+
+    .bar {
+      height: 8px;
+      background: rgba(255, 255, 255, .06);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 14px 0;
+    }
+
+    .bar .fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand-500), var(--brand2-500));
+      border-radius: 999px;
+      transition: width .4s;
+      width: 0%;
+    }
+
+    .bar .fill.err {
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
+
+    .stage-log {
+      font-family: 'Space Grotesk', monospace;
+      font-size: .82rem;
+      color: var(--text-muted);
+      min-height: 24px;
+      margin-top: 8px;
+    }
+
+    .stage-log .stage {
+      color: var(--accent-400);
+      font-weight: 600;
+    }
+
+    /* History */
+    .history {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .02);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .row:hover {
+      border-color: var(--border-strong);
+      transform: translateX(2px);
+      box-shadow: 0 4px 16px -4px rgba(96, 165, 250, .1);
+    }
+
+    .row .ico {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(96, 165, 250, .1);
+      color: var(--brand-400);
+      font-size: 1.1rem;
+    }
+
+    .row .meta .name {
+      font-weight: 600;
+      font-size: .95rem;
+    }
+
+    .row .meta .sub2 {
+      color: var(--text-muted);
+      font-size: .78rem;
+      margin-top: 2px;
+    }
+
+    .row .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: .7rem;
+      font-weight: 600;
+      background: rgba(52, 211, 153, .1);
+      color: var(--success-400);
+      border: 1px solid var(--border);
+    }
+
+    .row .dl {
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: .82rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, rgba(59, 130, 246, .15), rgba(168, 85, 247, .15));
+      color: var(--brand-400);
+      text-decoration: none;
+      border: 1px solid var(--border-strong);
+      transition: all .2s;
+    }
+
+    .row .dl:hover {
+      background: linear-gradient(135deg, var(--brand-500), var(--brand2-500));
+      color: #fff;
+    }
+
+    .empty {
+      padding: 40px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    /* Modal video */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 24px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal video {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 16px;
+      box-shadow: 0 30px 80px -20px rgba(96, 165, 250, .3);
+    }
+
+    .modal .close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: rgba(255, 255, 255, .1);
+      border: none;
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .modal .close:hover {
+      background: rgba(255, 255, 255, .2);
+    }
+
+    .foot {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: .82rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 14px 22px;
+      border-radius: 14px;
+      background: rgba(10, 10, 15, .92);
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      font-weight: 500;
+      box-shadow: 0 12px 40px -10px rgba(0, 0, 0, .5);
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all .3s var(--ease-out);
+      z-index: 200;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast.error {
+      border-color: rgba(248, 113, 113, .4);
+      color: #fca5a5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-mesh"></div>
+  <nav class="nav">
+    <a class="brand">🎬 YouTube Kids<span class="accent">Studio</span></a>
+    <a class="link" id="navHome">Studio</a>
+    <a class="link" id="navHistory">Geçmiş</a>
+    <span class="spacer"></span>
+    <a class="link" href="https://github.com/Xolith/youtube-kids-channel" target="_blank">GitHub</a>
+  </nav>
+
+  <main class="wrap">
+    <h1>Studio</h1>
+    <p class="sub">Premium çocuk Shorts videoları üret — AI görseller, doğal ses, sinematik montaj.</p>
+
+    <section class="grid">
+      <div class="stat">
+        <div class="lbl">Mevcut konu</div>
+        <div class="val" id="curTopic">—</div>
+      </div>
+      <div class="stat">
+        <div class="lbl">Sahne sayısı</div>
+        <div class="val" id="curScenes">0</div>
+      </div>
+      <div class="stat">
+        <div class="lbl">Maliyet</div>
+        <div class="val">₺0 <span style="font-size:1rem;color:var(--success-400)">Ücretsiz</span></div>
+      </div>
+    </section>
+
+    <!-- 0. AI Topic Generation -->
+    <section class="section" style="border-color: rgba(168,85,247,.3);">
+      <div class="section-head">
+        <h2>🤖 AI ile Konu Üret</h2>
+        <span style="color:var(--brand2-500);font-size:.85rem;">OpenRouter (Free) · Yapay zeka senin için konu
+          oluştursun</span>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+        <div style="flex:1;min-width:200px;">
+          <label style="color:var(--text-muted);font-size:.82rem;display:block;margin-bottom:6px;">Konu fikri (örn:
+            "Dinazorlar", "Uzay istasyonu", "Böcekler")</label>
+          <input type="text" id="aiPrompt" placeholder="Bir konu fikri girin..."
+            style="width:100%;padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text-primary);font-size:.95rem;outline:none;">
+        </div>
+        <div>
+          <label style="color:var(--text-muted);font-size:.82rem;display:block;margin-bottom:6px;">Model</label>
+          <select id="aiModel"
+            style="padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text-primary);font-size:.9rem;outline:none;cursor:pointer;">
+            <option value="google/gemma-4-31b-it:free">Gemma 4 31B (Free) ⭐</option>
+            <option value="nvidia/nemotron-3-ultra-550b-a55b:free">Nemotron 3 Ultra 550B (Free)</option>
+            <option value="nvidia/nemotron-3-super-120b-a12b:free">Nemotron 3 Super 120B (Free)</option>
+            <option value="openai/gpt-oss-20b:free">GPT OSS 20B (Free)</option>
+            <option value="nvidia/nemotron-3-nano-30b-a3b:free">Nemotron 3 Nano 30B (Free)</option>
+            <option value="google/gemma-4-26b-a4b-it:free">Gemma 4 26B (Free)</option>
+          </select>
+        </div>
+        <button id="aiGenTopicBtn"
+          style="padding:12px 24px;border-radius:12px;font-weight:600;background:linear-gradient(135deg,var(--brand2-500),var(--brand-500));color:#fff;border:none;cursor:pointer;font-size:.95rem;white-space:nowrap;">✨
+          Konu Üret</button>
+      </div>
+      <div id="aiTopicResult"
+        style="margin-top:16px;display:none;padding:16px;border-radius:14px;background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.2);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <span style="font-size:1.3rem;">🎯</span>
+          <strong id="aiTopicName" style="font-family:'Sora';font-size:1.1rem;"></strong>
+        </div>
+        <p id="aiTopicDesc" style="color:var(--text-muted);font-size:.88rem;margin-bottom:12px;"></p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button id="aiGenImagesBtn"
+            style="padding:10px 18px;border-radius:10px;font-weight:600;font-size:.85rem;background:rgba(52,211,153,.12);color:var(--success-400);border:1px solid rgba(52,211,153,.3);cursor:pointer;">🎨
+            AI Görsel Üret (HF)</button>
+          <button id="aiAnimateBtn"
+            style="padding:10px 18px;border-radius:10px;font-weight:600;font-size:.85rem;background:rgba(34,211,238,.12);color:var(--accent-400);border:1px solid rgba(34,211,238,.3);cursor:pointer;">🎬
+            Resimleri Hareketlendir (HF)</button>
+          <button id="aiUseTopicBtn"
+            style="padding:10px 18px;border-radius:10px;font-weight:600;font-size:.85rem;background:linear-gradient(135deg,var(--brand-500),var(--brand2-500));color:#fff;border:none;cursor:pointer;">✓
+            Bu Konuyu Kullan</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Topic selection -->
+    <section class="section">
+      <div class="section-head">
+        <h2>1. Konu seç</h2>
+        <span style="color:var(--text-muted);font-size:.85rem;">Hazır konular veya AI ile üretilen</span>
+      </div>
+      <div class="topics" id="topicsGrid">
+        <div class="empty">Yükleniyor…</div>
+      </div>
+    </section>
+
+    <!-- 2. Style -->
+    <section class="section">
+      <div class="section-head">
+        <h2>2. Stil</h2>
+      </div>
+      <div class="chips" id="styleChips">
+        <div class="chip active" data-style="cinematic">🎬 Sinematik (Pixar)</div>
+        <div class="chip" data-style="kawaii">✨ Kawaii (basit)</div>
+      </div>
+    </section>
+
+    <!-- 3. Scenes / image upload -->
+    <section class="section">
+      <div class="section-head">
+        <h2>3. Sahneler & görseller</h2>
+        <span style="color:var(--text-muted);font-size:.85rem;">7 sahne için PNG yükle (dikey 9:16)</span>
+      </div>
+      <div class="scenes" id="scenesList"></div>
+    </section>
+
+    <!-- 4. Generate -->
+    <section class="section">
+      <div class="section-head">
+        <h2>4. Üret</h2>
+      </div>
+      <button class="gen-btn" id="genBtn" disabled>🎬 Videoyu üret</button>
+      <div class="progress" id="progress">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <strong id="stageLabel">Hazırlanıyor…</strong>
+          <span id="pct" style="font-family:'Sora';font-weight:700;">0%</span>
+        </div>
+        <div class="bar">
+          <div class="fill" id="barFill"></div>
+        </div>
+        <div class="stage-log" id="stageLog"></div>
+      </div>
+    </section>
+
+    <!-- 5. History -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Üretilen videolar</h2>
+        <a class="link" id="refreshHist" style="color:var(--brand-400);cursor:pointer;">↻ Yenile</a>
+      </div>
+      <div class="history" id="history">
+        <div class="empty">Yükleniyor…</div>
+      </div>
+    </section>
+
+    <div class="foot">
+      <span>YouTube Kids Studio — ücretsiz, lokal, premium pipeline.</span>
+      <span>ElevenLabs Jessica + FAL + FFmpeg</span>
+    </div>
+  </main>
+
+  <!-- Video modal -->
+  <div class="modal" id="modal">
+    <button class="close" id="modalClose">×</button>
+    <video id="modalVideo" controls></video>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const API = ''; // same origin
+    const state = { topic: null, style: 'cinematic', scenes: [], images: {}, clientId: null, ws: null };
+
+    // ---- Topics ----
+    async function loadTopics() {
+      const r = await fetch(API + '/api/topics'); const d = await r.json();
+      const g = document.getElementById('topicsGrid'); g.innerHTML = '';
+      d.topics.forEach(t => {
+        const el = document.createElement('div'); el.className = 'topic';
+        el.innerHTML = `<div class="ico">${iconFor(t.name)}</div><h3>${t.name}</h3><p>${t.description} · ${t.scene_count} sahne</p>`;
+        el.onclick = () => selectTopic(t.name, el);
+        g.appendChild(el);
+      });
+    }
+    function iconFor(n) { return { 'Ocean Animals': '🌊', 'Space Adventure': '🚀' }[n] || '🎬'; }
+
+    async function selectTopic(name, el) {
+      document.querySelectorAll('.topic').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      state.topic = name;
+      document.getElementById('curTopic').textContent = name;
+      const r = await fetch(API + '/api/topic/' + encodeURIComponent(name)); const d = await r.json();
+      state.scenes = d.scenes;
+      document.getElementById('curScenes').textContent = d.scenes.length;
+      renderScenes();
+      checkReady();
+    }
+
+    function renderScenes() {
+      const l = document.getElementById('scenesList'); l.innerHTML = '';
+      state.scenes.forEach(s => {
+        const [sid, narration, subtitle, bub, rays] = s;
+        const row = document.createElement('div'); row.className = 'scene';
+        row.innerHTML = `
+      <div class="n">${sid.split('_')[0]}</div>
+      <div class="txt">${truncate(narration, 80)}<div style="font-size:.72rem;color:var(--brand2-500);margin-top:3px;">${subtitle}</div></div>
+      <label class="upload-btn" id="up-${sid}">📤 PNG yükle<input type="file" accept="image/png" onchange="uploadImg('${sid}',this)"></label>
+      <span class="sub-tag" id="tag-${sid}">${bub ? 'bubbles' : ''} ${rays ? 'rays' : ''}</span>`;
+        // pre-fill if image already in state
+        if (state.images[sid]) { markUploaded(sid, 'Mevcut'); }
+        l.appendChild(row);
+      });
+    }
+    function truncate(s, n) { return s.length > n ? s.slice(0, n) + '…' : s; }
+
+    async function uploadImg(sid, input) {
+      const f = input.files[0]; if (!f) return;
+      const fd = new FormData(); fd.append('file', f);
+      const t = encodeURIComponent(state.topic);
+      const r = await fetch(API + `/api/upload/${sid}/${t}`, { method: 'POST', body: fd });
+      if (r.ok) { const d = await r.json(); state.images[sid] = d.saved; markUploaded(sid, '✓ ' + d.size_kb + ' KB'); checkReady(); toast('Görsel yüklendi: ' + sid); }
+      else { toast('Yükleme hatası', 'error'); }
+    }
+    function markUploaded(sid, txt) {
+      const up = document.getElementById('up-' + sid); if (up) { up.classList.add('has'); up.firstChild.textContent = '📤 ' + txt; }
+    }
+
+    function checkReady() {
+      const have = Object.keys(state.images).length;
+      const need = state.scenes.length;
+      document.getElementById('genBtn').disabled = !(state.topic && have >= need);
+    }
+
+    // ---- Style chips ----
+    document.querySelectorAll('#styleChips .chip').forEach(c => {
+      c.onclick = () => { document.querySelectorAll('#styleChips .chip').forEach(x => x.classList.remove('active')); c.classList.add('active'); state.style = c.dataset.style; };
+    });
+
+    // ---- Generate ----
+    document.getElementById('genBtn').onclick = async () => {
+      const btn = document.getElementById('genBtn'); btn.disabled = true; btn.textContent = '⏳ Üretiliyor…';
+      document.getElementById('progress').classList.add('show');
+      // connect WebSocket for progress
+      const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+      state.ws = new WebSocket(proto + '://' + location.host + '/ws/progress');
+      state.ws.onmessage = ev => { const d = JSON.parse(ev.data); if (d.stage) { updateProgress(d); } };
+      state.ws.onopen = async () => {
+        state.clientId = await new Promise(r => { state.ws.addEventListener('message', function h(e) { const d = JSON.parse(e.data); if (d.client_id) { state.ws.removeEventListener('message', h); r(d.client_id); } }, { once: false }); });
+        // call generate
+        const body = { topic: state.topic, style: state.style, client_id: state.clientId };
+        const resp = await fetch(API + '/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (!resp.ok) { const e = await resp.json(); toast('Hata: ' + e.detail, 'error'); btn.disabled = false; btn.textContent = '🎬 Videoyu üret'; }
+      };
+    };
+
+    function updateProgress(d) {
+      document.getElementById('stageLabel').textContent = stageLabel(d.stage);
+      document.getElementById('pct').textContent = d.progress + '%';
+      document.getElementById('barFill').style.width = d.progress + '%';
+      document.getElementById('stageLog').innerHTML = `<span class="stage">${d.stage}</span> · ${d.message}`;
+      if (d.stage === 'done') {
+        document.getElementById('barFill').classList.remove('err');
+        const btn = document.getElementById('genBtn'); btn.disabled = false; btn.textContent = '🎬 Yeni video üret';
+        toast('✅ Video hazır!');
+        setTimeout(loadHistory, 500);
+      } else if (d.stage === 'error') {
+        document.getElementById('barFill').classList.add('err');
+        document.getElementById('barFill').style.width = '100%';
+        document.getElementById('genBtn').disabled = false;
+        document.getElementById('genBtn').textContent = '🎬 Tekrar dene';
+        toast('Hata: ' + d.message, 'error');
+      }
+    }
+    function stageLabel(s) { return { 'preparing': 'Hazırlık', 'tts': 'Ses üretimi', 'build': 'Montaj', 'concat': 'Birleştirme', 'done': 'Tamam', 'error': 'Hata' }[s] || s; }
+
+    // ---- History ----
+    async function loadHistory() {
+      const r = await fetch(API + '/api/history'); const d = await r.json();
+      const h = document.getElementById('history');
+      if (!d.videos.length) { h.innerHTML = '<div class="empty">Henüz video yok.</div>'; return; }
+      h.innerHTML = '';
+      d.videos.forEach(v => {
+        const row = document.createElement('div'); row.className = 'row';
+        const dt = new Date(v.created * 1000).toLocaleString('tr-TR');
+        row.innerHTML = `
+      <div class="ico">🎬</div>
+      <div class="meta"><div class="name">${v.filename}</div><div class="sub2">${dt}</div></div>
+      <span class="pill">${v.size_mb} MB</span>
+      <a class="dl" onclick="previewVideo('${v.filename}');return false;">▶ İzle</a>`;
+        h.appendChild(row);
+      });
+    }
+    function previewVideo(fn) {
+      const m = document.getElementById('modal'); const v = document.getElementById('modalVideo');
+      v.src = API + '/api/preview/' + fn; m.classList.add('show');
+    }
+    document.getElementById('modalClose').onclick = () => { document.getElementById('modal').classList.remove('show'); document.getElementById('modalVideo').pause(); };
+    document.getElementById('refreshHist').onclick = loadHistory;
+    document.getElementById('navHistory').onclick = () => { document.querySelector('#history').scrollIntoView({ behavior: 'smooth' }); };
+    document.getElementById('navHome').onclick = () => { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+
+    // ---- Toast ----
+    function toast(msg, type) {
+      const t = document.getElementById('toast'); t.textContent = msg; if (type) t.classList.add(type);
+      t.classList.add('show'); setTimeout(() => { t.classList.remove('show'); if (type) t.classList.remove(type); }, 3000);
+    }
+
+    // ---- AI Topic Generation ----
+    let aiTopicData = null;
+
+    document.getElementById('aiGenTopicBtn').onclick = async () => {
+      const prompt = document.getElementById('aiPrompt').value.trim();
+      const model = document.getElementById('aiModel').value;
+      if (!prompt) { toast('Lütfen bir konu fikri girin', 'error'); return; }
+      const btn = document.getElementById('aiGenTopicBtn');
+      btn.disabled = true; btn.textContent = '⏳ Üretiliyor…';
+      try {
+        const r = await fetch(API + '/api/ai/generate-topic', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt, model })
+        });
+        if (!r.ok) { const e = await r.json(); toast('Hata: ' + e.detail, 'error'); return; }
+        aiTopicData = await r.json();
+        document.getElementById('aiTopicName').textContent = aiTopicData.name;
+        document.getElementById('aiTopicDesc').textContent = aiTopicData.description + ' · ' + aiTopicData.scenes.length + ' sahne';
+        document.getElementById('aiTopicResult').style.display = 'block';
+        toast('✅ Konu üretildi: ' + aiTopicData.name);
+      } catch (e) { toast('Hata: ' + e.message, 'error'); }
+      finally { btn.disabled = false; btn.textContent = '✨ Konu Üret'; }
+    };
+
+    document.getElementById('aiUseTopicBtn').onclick = async () => {
+      if (!aiTopicData) return;
+      // Reload topics to include the new AI-generated one
+      await loadTopics();
+      // Find and select the new topic
+      const topicName = aiTopicData.name;
+      const topicEl = [...document.querySelectorAll('.topic')].find(el => el.querySelector('h3').textContent === topicName);
+      if (topicEl) { selectTopic(topicName, topicEl); toast('Konu seçildi: ' + topicName); }
+      else { toast('Konu bulunamadı, manuel seçin', 'error'); }
+    };
+
+    document.getElementById('aiGenImagesBtn').onclick = async () => {
+      if (!aiTopicData) { toast('Önce konu üretin', 'error'); return; }
+      const btn = document.getElementById('aiGenImagesBtn');
+      btn.disabled = true; btn.textContent = '⏳ Görseller üretiliyor…';
+      // Connect WebSocket for progress
+      const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+      state.ws = new WebSocket(proto + '://' + location.host + '/ws/progress');
+      state.ws.onmessage = ev => { const d = JSON.parse(ev.data); if (d.stage) { updateProgress(d); } };
+      state.ws.onopen = async () => {
+        state.clientId = await new Promise(r => { state.ws.addEventListener('message', function h(e) { const d = JSON.parse(e.data); if (d.client_id) { state.ws.removeEventListener('message', h); r(d.client_id); } }); });
+        document.getElementById('progress').classList.add('show');
+        const r = await fetch(API + '/api/ai/generate-images', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic: aiTopicData.name, style: state.style, client_id: state.clientId })
+        });
+        if (!r.ok) { const e = await r.json(); toast('Hata: ' + e.detail, 'error'); btn.disabled = false; btn.textContent = '🎨 AI Görsel Üret (HF)'; }
+      };
+      btn.disabled = false; btn.textContent = '🎨 AI Görsel Üret (HF)';
+    };
+
+    document.getElementById('aiAnimateBtn').onclick = async () => {
+      if (!aiTopicData) { toast('Önce konu üretin', 'error'); return; }
+      const btn = document.getElementById('aiAnimateBtn');
+      btn.disabled = true; btn.textContent = '⏳ Hareketlendiriliyor…';
+      const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+      state.ws = new WebSocket(proto + '://' + location.host + '/ws/progress');
+      state.ws.onmessage = ev => { const d = JSON.parse(ev.data); if (d.stage) { updateProgress(d); } };
+      state.ws.onopen = async () => {
+        state.clientId = await new Promise(r => { state.ws.addEventListener('message', function h(e) { const d = JSON.parse(e.data); if (d.client_id) { state.ws.removeEventListener('message', h); r(d.client_id); } }); });
+        document.getElementById('progress').classList.add('show');
+        const r = await fetch(API + '/api/ai/animate-images', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic: aiTopicData.name, client_id: state.clientId })
+        });
+        if (!r.ok) { const e = await r.json(); toast('Hata: ' + e.detail, 'error'); btn.disabled = false; btn.textContent = '🎬 Resimleri Hareketlendir (HF)'; }
+      };
+      btn.disabled = false; btn.textContent = '🎬 Resimleri Hareketlendir (HF)';
+    };
+
+    // Extend stageLabel to include AI stages
+    const _origStageLabel = stageLabel;
+    stageLabel = function (s) {
+      const aiLabels = { 'image_gen': 'AI Görsel', 'images_done': 'Görseller Tamam', 'animating': 'Hareketlendirme', 'animate_done': 'Animasyon Tamam' };
+      return aiLabels[s] || _origStageLabel(s);
+    };
+
+    // ---- Init ----
+    loadTopics(); loadHistory();
+    // Pre-load existing images into state (if topic already has images)
+    fetch(API + '/api/topics').then(r => r.json()).then(d => {
+      d.topics.forEach(async t => {
+        const dir = t.name.replace(' ', '_').toLowerCase();
+        // backend has no endpoint to list images by topic; skip prefill
+      });
+    });
+  </script>
+</body>
+
+</html>
